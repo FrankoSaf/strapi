@@ -1,5 +1,11 @@
 ---
+import fetchApi from '../lib/strapi';
+import type Article from '../interfaces/blog';
 
+const articles = await fetchApi<Article[]>({
+  endpoint: 'blogs', // the content type to fetch
+  wrappedByKey: 'data', // the key to unwrap the response
+});
 ---
 
 <html lang="en">
@@ -12,5 +18,17 @@
 	</head>
 	<body>
 		<h1>Astro</h1>
+
+		<ul>
+			{
+			  articles.map((article) => (
+				<li>
+				  <a href={`/blog/${article.text}/`}>
+					{article.title}
+				  </a>
+				</li>
+			  ))
+			}
+		  </ul>
 	</body>
 </html>
